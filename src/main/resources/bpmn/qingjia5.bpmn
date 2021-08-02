@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_03io3g1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.9.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0">
+  <bpmn:process id="process_qingjia5" name="流程请假5" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="start">
+      <bpmn:extensionElements>
+        <camunda:executionListener class="com.zgd.demo.activiti.listener.MyStartListener" event="start" />
+      </bpmn:extensionElements>
+      <bpmn:outgoing>start-dept</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="start-dept" sourceRef="StartEvent_1" targetRef="dept_approve" />
+    <bpmn:userTask id="dept_approve" name="部门审批1" activiti:assignee="${user1}">
+      <bpmn:extensionElements>
+        <camunda:taskListener class="com.zgd.demo.activiti.listener.MyTaskListener" event="create" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>start-dept</bpmn:incoming>
+      <bpmn:outgoing>dept-manage</bpmn:outgoing>
+      <bpmn:outgoing>dept-hr</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="ceo_approve" sourceRef="dept_approve" targetRef="Activity_1bm8ukn" />
+    <bpmn:userTask id="Activity_1bm8ukn" name="ceo审批3" activiti:assignee="${user3}">
+      <bpmn:incoming>manage-ceo</bpmn:incoming>
+      <bpmn:outgoing>ceo-hr</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="Event_1bx9j62">
+      <bpmn:extensionElements>
+        <camunda:executionListener class="com.zgd.demo.activiti.listener.MyStartListener" event="end" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>hr-end</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="ceo-hr" sourceRef="Activity_1bm8ukn" targetRef="Activity_1cmhuey" />
+    <bpmn:sequenceFlow id="dept-manage" name="如果假期超过3天" sourceRef="dept_approve" targetRef="Activity_06ju9m7">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${holiday.days&gt;3}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="dept-hr" name="如果假期不超过3天" sourceRef="dept_approve" targetRef="Activity_1cmhuey">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${holiday.days&lt;=3}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:userTask id="Activity_1cmhuey" name="人事审批4" activiti:assignee="${user4}">
+      <bpmn:incoming>dept-hr</bpmn:incoming>
+      <bpmn:incoming>ceo-hr</bpmn:incoming>
+      <bpmn:outgoing>hr-end</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="hr-end" sourceRef="Activity_1cmhuey" targetRef="Event_1bx9j62" />
+    <bpmn:userTask id="Activity_06ju9m7" name="经理审批2" activiti:assignee="${user2}">
+      <bpmn:incoming>dept-manage</bpmn:incoming>
+      <bpmn:outgoing>manage-ceo</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="manage-ceo" sourceRef="Activity_06ju9m7" targetRef="Activity_1bm8ukn" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="process_qingjia5">
+      <bpmndi:BPMNEdge id="Flow_0siyel0_di" bpmnElement="manage-ceo">
+        <di:waypoint x="470" y="120" />
+        <di:waypoint x="540" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0bb7crx_di" bpmnElement="hr-end">
+        <di:waypoint x="740" y="317" />
+        <di:waypoint x="852" y="317" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gyep13_di" bpmnElement="dept-hr">
+        <di:waypoint x="370" y="317" />
+        <di:waypoint x="640" y="317" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="464" y="299" width="83" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_17adcyb_di" bpmnElement="dept-manage">
+        <di:waypoint x="320" y="277" />
+        <di:waypoint x="320" y="120" />
+        <di:waypoint x="370" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="288" y="183" width="84" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10k3xx1_di" bpmnElement="ceo-hr">
+        <di:waypoint x="640" y="120" />
+        <di:waypoint x="690" y="120" />
+        <di:waypoint x="690" y="277" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1bd9iq9_di" bpmnElement="start-dept">
+        <di:waypoint x="215" y="317" />
+        <di:waypoint x="270" y="317" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="299" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="186" y="342" width="23" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1yflgc5_di" bpmnElement="dept_approve">
+        <dc:Bounds x="270" y="277" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0rz25nx_di" bpmnElement="Activity_1bm8ukn">
+        <dc:Bounds x="540" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1bx9j62_di" bpmnElement="Event_1bx9j62">
+        <dc:Bounds x="852" y="299" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0a1vtaj_di" bpmnElement="Activity_1cmhuey">
+        <dc:Bounds x="640" y="277" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1uulq88_di" bpmnElement="Activity_06ju9m7">
+        <dc:Bounds x="370" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

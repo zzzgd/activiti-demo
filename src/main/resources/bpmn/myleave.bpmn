@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.kafeitu.me/activiti/leave" exporter="Camunda Modeler" exporterVersion="4.9.0">
+  <process id="leave" name="我的测试请假流程-普通表单" isExecutable="true">
+    <documentation>请假流程演示</documentation>
+    <startEvent id="startevent1" name="Start" />
+    <userTask id="deptLeaderVerify" name="部门领导审批" camunda:formKey="deptLeaderVerify" camunda:assignee="zhangsan" camunda:candidateUsers="${deptLeader}">
+      <extensionElements>
+        <camunda:formProperty id="FormProperty_3qipis2--__!!radio--__!!审批意见--__!!i--__!!同意--__--不同意" type="string" />
+        <camunda:formProperty id="FormProperty_0lffpcm--__!!textarea--__!!批注--__!!f__!!null" type="string" />
+      </extensionElements>
+    </userTask>
+    <exclusiveGateway id="exclusivegateway5">
+      <outgoing>Flow_0q3bbjl</outgoing>
+    </exclusiveGateway>
+    <userTask id="hrVerify" name="人事审批" camunda:formKey="hrVerify" camunda:assignee="lisi" camunda:candidateGroups="hr">
+      <extensionElements>
+        <camunda:formProperty id="FormProperty_23u95jb--__!!radio--__!!审批意见--__!!i--__!!同意--__--不同意" type="string" />
+        <camunda:formProperty id="FormProperty_3t7tfkv--__!!textarea--__!!批注--__!!f--__!!null" type="string" />
+      </extensionElements>
+    </userTask>
+    <exclusiveGateway id="exclusivegateway6">
+      <outgoing>Flow_0p85954</outgoing>
+      <outgoing>Flow_0ji7qcv</outgoing>
+    </exclusiveGateway>
+    <endEvent id="endevent1" name="End">
+      <incoming>Flow_0p85954</incoming>
+      <incoming>Flow_0ji7qcv</incoming>
+      <incoming>Flow_0q3bbjl</incoming>
+    </endEvent>
+    <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="deptLeaderVerify" />
+    <sequenceFlow id="flow3" sourceRef="deptLeaderVerify" targetRef="exclusivegateway5" />
+    <sequenceFlow id="flow5" name="同意" sourceRef="exclusivegateway5" targetRef="hrVerify">
+      <conditionExpression xsi:type="tFormalExpression">${FormProperty_3qipis2==0}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="hrVerify" targetRef="exclusivegateway6" />
+    <sequenceFlow id="Flow_0p85954" sourceRef="exclusivegateway6" targetRef="endevent1">
+      <extensionElements>
+        <camunda:executionListener class="com.ruoyi.leave.instener.LeaveEndStateListener" event="take">
+          <camunda:field name="state">
+            <camunda:string>1</camunda:string>
+          </camunda:field>
+        </camunda:executionListener>
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression">${FormProperty_23u95jb==0}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="Flow_0ji7qcv" sourceRef="exclusivegateway6" targetRef="endevent1">
+      <extensionElements>
+        <camunda:executionListener class="com.ruoyi.leave.instener.LeaveEndStateListener" event="take">
+          <camunda:field name="state">
+            <camunda:string>2</camunda:string>
+          </camunda:field>
+        </camunda:executionListener>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="Flow_0q3bbjl" sourceRef="exclusivegateway5" targetRef="endevent1">
+      <extensionElements>
+        <camunda:executionListener class="com.ruoyi.leave.instener.LeaveEndStateListener" event="take">
+          <camunda:field name="state">
+            <camunda:string>2</camunda:string>
+          </camunda:field>
+        </camunda:executionListener>
+      </extensionElements>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_leave">
+    <bpmndi:BPMNPlane id="BPMNPlane_leave" bpmnElement="leave">
+      <bpmndi:BPMNEdge id="Flow_0q3bbjl_di" bpmnElement="Flow_0q3bbjl">
+        <omgdi:waypoint x="420" y="133" />
+        <omgdi:waypoint x="420" y="190" />
+        <omgdi:waypoint x="742" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ji7qcv_di" bpmnElement="Flow_0ji7qcv">
+        <omgdi:waypoint x="665" y="133" />
+        <omgdi:waypoint x="665" y="190" />
+        <omgdi:waypoint x="742" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0p85954_di" bpmnElement="Flow_0p85954">
+        <omgdi:waypoint x="685" y="113" />
+        <omgdi:waypoint x="760" y="113" />
+        <omgdi:waypoint x="760" y="172" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_flow6" bpmnElement="flow6">
+        <omgdi:waypoint x="613" y="113" />
+        <omgdi:waypoint x="645" y="113" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_flow5" bpmnElement="flow5">
+        <omgdi:waypoint x="440" y="113" />
+        <omgdi:waypoint x="508" y="113" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="460" y="96" width="23" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_flow3" bpmnElement="flow3">
+        <omgdi:waypoint x="345" y="113" />
+        <omgdi:waypoint x="400" y="113" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_flow2" bpmnElement="flow2">
+        <omgdi:waypoint x="195" y="113" />
+        <omgdi:waypoint x="240" y="113" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BPMNShape_startevent1" bpmnElement="startevent1">
+        <omgdc:Bounds x="160" y="96" width="35" height="35" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="165" y="131" width="25" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_deptLeaderVerify" bpmnElement="deptLeaderVerify">
+        <omgdc:Bounds x="240" y="86" width="105" height="55" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_exclusivegateway5" bpmnElement="exclusivegateway5" isMarkerVisible="true">
+        <omgdc:Bounds x="400" y="93" width="40" height="40" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_hrVerify" bpmnElement="hrVerify">
+        <omgdc:Bounds x="508" y="86" width="105" height="55" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_exclusivegateway6" bpmnElement="exclusivegateway6" isMarkerVisible="true">
+        <omgdc:Bounds x="645" y="93" width="40" height="40" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_endevent1" bpmnElement="endevent1">
+        <omgdc:Bounds x="742" y="172" width="35" height="35" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="750" y="207" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
