@@ -1,5 +1,6 @@
-package com.zgd.demo.acitiviti;
+package com.zgd.demo.acitiviti.bpmn7;
 
+import com.zgd.demo.acitiviti.BaseTest;
 import org.activiti.api.process.model.ProcessDefinition;
 import org.activiti.api.process.model.builders.GetProcessDefinitionsPayloadBuilder;
 import org.activiti.api.runtime.shared.query.Page;

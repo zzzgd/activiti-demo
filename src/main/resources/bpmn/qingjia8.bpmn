@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns:activiti="http://activiti.org/bpmn" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_03io3g1"
+                  targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.9.0"
+                  modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0">
+
+    <bpmn:process id="qingjia8" name="请假8" isExecutable="true">
+        <bpmn:startEvent id="start" name="start">
+            <bpmn:outgoing>start-dept</bpmn:outgoing>
+        </bpmn:startEvent>
+        <bpmn:sequenceFlow id="start-dept" sourceRef="start" targetRef="dept_approve"/>
+        <bpmn:userTask id="dept_approve" name="部门组审批1" activiti:candidateUsers="${users}">
+            <bpmn:incoming>start-dept</bpmn:incoming>
+            <bpmn:outgoing>dept_hr</bpmn:outgoing>
+            <bpmn:outgoing>dept-manage</bpmn:outgoing>
+        </bpmn:userTask>
+        <bpmn:sequenceFlow id="dept_hr" name="假期小于3天" sourceRef="dept_approve" targetRef="hr_approve">
+            <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${holiday.days&lt;3}</bpmn:conditionExpression>
+        </bpmn:sequenceFlow>
+        <bpmn:userTask id="hr_approve" name="hr审批4" activiti:assignee="${user4}">
+            <bpmn:incoming>dept_hr</bpmn:incoming>
+            <bpmn:incoming>ceo-hr</bpmn:incoming>
+            <bpmn:outgoing>hr-end</bpmn:outgoing>
+        </bpmn:userTask>
+        <bpmn:sequenceFlow id="dept-manage" name="假期大于3天" sourceRef="dept_approve" targetRef="manage-approve">
+            <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${holiday.days&gt;=3}</bpmn:conditionExpression>
+        </bpmn:sequenceFlow>
+        <bpmn:userTask id="manage-approve" name="经理2" activiti:assignee="${user2}">
+            <bpmn:incoming>dept-manage</bpmn:incoming>
+            <bpmn:outgoing>manage-ceo</bpmn:outgoing>
+        </bpmn:userTask>
+        <bpmn:sequenceFlow id="manage-ceo" sourceRef="manage-approve" targetRef="ceo_approve"/>
+        <bpmn:userTask id="ceo_approve" name="ceo审批3" activiti:assignee="${user3}">
+            <bpmn:incoming>manage-ceo</bpmn:incoming>
+            <bpmn:outgoing>ceo-hr</bpmn:outgoing>
+        </bpmn:userTask>
+        <bpmn:sequenceFlow id="ceo-hr" sourceRef="ceo_approve" targetRef="hr_approve"/>
+        <bpmn:endEvent id="end" name="结束">
+            <bpmn:incoming>hr-end</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:sequenceFlow id="hr-end" sourceRef="hr_approve" targetRef="end"/>
+    </bpmn:process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+        <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="qingjia8">
+            <bpmndi:BPMNEdge id="Flow_1m7k0js_di" bpmnElement="start-dept">
+                <di:waypoint x="215" y="307"/>
+                <di:waypoint x="270" y="307"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_1kxf0ch_di" bpmnElement="dept_hr">
+                <di:waypoint x="370" y="307"/>
+                <di:waypoint x="760" y="307"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="535" y="289" width="62" height="14"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_1t8fxdt_di" bpmnElement="dept-manage">
+                <di:waypoint x="320" y="267"/>
+                <di:waypoint x="320" y="214"/>
+                <di:waypoint x="410" y="214"/>
+                <di:waypoint x="410" y="160"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="335" y="196" width="62" height="14"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_1quxoxm_di" bpmnElement="manage-ceo">
+                <di:waypoint x="460" y="120"/>
+                <di:waypoint x="510" y="120"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_186666e_di" bpmnElement="ceo-hr">
+                <di:waypoint x="610" y="120"/>
+                <di:waypoint x="685" y="120"/>
+                <di:waypoint x="685" y="307"/>
+                <di:waypoint x="760" y="307"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_0g81kab_di" bpmnElement="hr-end">
+                <di:waypoint x="860" y="307"/>
+                <di:waypoint x="922" y="307"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start">
+                <dc:Bounds x="179" y="289" width="36" height="36"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="186" y="332" width="23" height="14"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_00qjjbj_di" bpmnElement="dept_approve">
+                <dc:Bounds x="270" y="267" width="100" height="80"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_08yl7hz_di" bpmnElement="hr_approve">
+                <dc:Bounds x="760" y="267" width="100" height="80"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_0odfbaz_di" bpmnElement="manage-approve">
+                <dc:Bounds x="360" y="80" width="100" height="80"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_1pzctnw_di" bpmnElement="ceo_approve">
+                <dc:Bounds x="510" y="80" width="100" height="80"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Event_1wl8jbd_di" bpmnElement="end">
+                <dc:Bounds x="922" y="289" width="36" height="36"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="929" y="332" width="22" height="14"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</bpmn:definitions>

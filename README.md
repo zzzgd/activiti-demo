@@ -7,7 +7,14 @@
 ## 二. 说明
 resources下的processes文件夹是activiti读取加载的默认的文件夹位置
 
-## 二. 坑
+
+## 三. 结构
+### 按bpmn来区分
+1. qingjia7.bpmn  基础的流程部署, 启动, 任务完成, 变量替换, 条件选择分支
+2. qingjia8.bpmn  组成员, 接手, 转接任务
+
+
+## 四. 坑
 1. mysql连接必须加上`nullCatalogMeansCurrent=true`的参数,否则不会执行sql语句.具体原因如下:
     > 在使用mysql-connect 8.+以上版本的时候需要添加nullCatalogMeansCurrent=true参数，否则在使用mybatis-generator生成表对应的xml等时会扫描整个服务器里面的全部数据库中的表，而不是扫描对应数据库的表
 2. Springboot2整合了Activiti7之后, 会报`ACT_RE_DEPLOYMENT`表中缺少`VERSION_`字段, 以及`PROJECT_RELEASE_VERSION`字段.

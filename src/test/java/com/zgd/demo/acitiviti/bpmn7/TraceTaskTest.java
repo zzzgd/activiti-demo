@@ -1,5 +1,6 @@
-package com.zgd.demo.acitiviti;
+package com.zgd.demo.acitiviti.bpmn7;
 
+import com.zgd.demo.acitiviti.BaseTest;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.SequenceFlow;
@@ -23,7 +24,7 @@ import java.util.List;
  * @author zgd
  * @date 2021/8/2 17:50
  */
-public class TraceTaskTest extends BaseTest{
+public class TraceTaskTest extends BaseTest {
 
 
   /**

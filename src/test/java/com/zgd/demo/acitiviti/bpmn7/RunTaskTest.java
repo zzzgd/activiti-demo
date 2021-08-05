@@ -1,6 +1,7 @@
-package com.zgd.demo.acitiviti;
+package com.zgd.demo.acitiviti.bpmn7;
 
 import com.alibaba.fastjson.JSON;
+import com.zgd.demo.acitiviti.BaseTest;
 import com.zgd.demo.activiti.dto.Holiday;
 import org.activiti.api.runtime.shared.query.Page;
 import org.activiti.api.runtime.shared.query.Pageable;
@@ -18,7 +19,7 @@ import java.util.Map;
  * @author zgd
  * @date 2021/8/2 11:32
  */
-public class RunTaskTest extends BaseTest{
+public class RunTaskTest extends BaseTest {
 
 
 

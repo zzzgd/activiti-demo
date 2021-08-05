@@ -1,5 +1,6 @@
-package com.zgd.demo.acitiviti;
+package com.zgd.demo.acitiviti.bpmn7;
 
+import com.zgd.demo.acitiviti.BaseTest;
 import org.activiti.api.process.model.builders.ProcessPayloadBuilder;
 import org.activiti.api.process.model.payloads.StartProcessPayload;
 import org.activiti.engine.RuntimeService;
@@ -59,7 +60,7 @@ public class ProcessStartTest extends BaseTest {
   public void startProcessInstance() {
     //设置assignee,map键对应配置中的变量名
     Map<String,Object> map=new HashMap<>();
-    map.put("user1","bumen");
+    map.put("user","bumen");
     map.put("user2","jingli");
     map.put("user3","ceo");
     map.put("user4","hr");
