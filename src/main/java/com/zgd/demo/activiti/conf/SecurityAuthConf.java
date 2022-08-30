@@ -29,10 +29,11 @@ public class SecurityAuthConf {
         String[][] usersGroupsAndRoles  = {
                 {"ryandawsonuk", "password", "ROLE_ACTIVITI_USER", "GROUP_activitiTeam"},
                 {"erdemedeiros", "password", "ROLE_ACTIVITI_USER", "GROUP_activitiTeam"},
-                {"lisi", "password", "ROLE_ACTIVITI_USER", "GROUP_otherTeam"},
                 {"zhangsan", "password", "ROLE_ACTIVITI_USER", "GROUP_activitiTeam"},
+                {"lisi", "password", "ROLE_ACTIVITI_USER", "GROUP_otherTeam"},
                 {"wangwu", "password", "ROLE_ACTIVITI_USER", "GROUP_activitiTeam"},
                 {"zhaoliu", "password", "ROLE_ACTIVITI_USER", "GROUP_activitiTeam"},
+                {"xiaoming", "password", "ROLE_ACTIVITI_USER", "GROUP_otherTeam"},
                 {"system", "password", "ROLE_ACTIVITI_USER"},
                 {"admin", "password", "ROLE_ACTIVITI_ADMIN"}
         };

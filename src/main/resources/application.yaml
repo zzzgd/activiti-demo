@@ -1,9 +1,9 @@
 spring:
   datasource:
     # 必须加上nullCatalogMeansCurrent=true参数, 否则不会自动生成表
-    url: jdbc:mysql://localhost:3306/my_activiti?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&nullCatalogMeansCurrent=true
+    url: jdbc:mysql://localhost:3306/activiti?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&nullCatalogMeansCurrent=true
     username: root
-    password: 123456
+    password: zhangguodong
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       connection-test-query: "select 1"
@@ -11,8 +11,18 @@ spring:
     # 自动更新, 创建表结构
     database-schema-update: true
     # 关闭activiti自动部署（使用流程设计器部署，不使用具体文件访问方式）
+
     db-history-used: true
     # 历史保存等级
     history-level: full
-    database-schema: my_activiti
+    database-schema: activiti
     deployment-mode: never-fail
+
+
+server:
+  port: 8800
+
+logging:
+  root: info
+  level:
+    org.activiti.engine: debug

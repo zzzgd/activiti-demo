@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://bpmn.io/schema/bpmn">
+  <process id="qingjia" name="请假模拟" isExecutable="true">
+    <startEvent id="start" name="start"></startEvent>
+    <sequenceFlow id="start-dept" sourceRef="start" targetRef="dept_approve"></sequenceFlow>
+    <userTask id="dept_approve" name="部门审批" activiti:candidateUsers="${user1_list}"></userTask>
+    <userTask id="hr_approve" name="hr审批" activiti:assignee="${user3}">
+      <extensionElements>
+        <modeler:initiator-can-complete xmlns:modeler="http://activiti.com/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
+      </extensionElements>
+    </userTask>
+    <userTask id="manage-approve" name="经理审批" activiti:assignee="${user2}">
+      <extensionElements>
+        <modeler:initiator-can-complete xmlns:modeler="http://activiti.com/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
+      </extensionElements>
+    </userTask>
+    <endEvent id="end" name="结束"></endEvent>
+    <sequenceFlow id="hr-end" sourceRef="hr_approve" targetRef="end"></sequenceFlow>
+    <sequenceFlow id="manage-ceo" sourceRef="manage-approve" targetRef="hr_approve"></sequenceFlow>
+    <exclusiveGateway id="sid-76D7CACC-A333-429B-9C25-A0AE9867BDB7"></exclusiveGateway>
+    <sequenceFlow id="sid-50C737B7-2375-41DC-B4C0-2A3C10CFBCB3" sourceRef="dept_approve" targetRef="sid-76D7CACC-A333-429B-9C25-A0AE9867BDB7"></sequenceFlow>
+    <sequenceFlow id="dept_hr" name="假期小于3天" sourceRef="sid-76D7CACC-A333-429B-9C25-A0AE9867BDB7" targetRef="hr_approve">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${holiday.days<3}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="dept-manage" name="假期大于3天" sourceRef="sid-76D7CACC-A333-429B-9C25-A0AE9867BDB7" targetRef="manage-approve">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${holiday.days>=3}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_qingjia">
+    <bpmndi:BPMNPlane bpmnElement="qingjia" id="BPMNPlane_qingjia">
+      <bpmndi:BPMNShape bpmnElement="start" id="BPMNShape_start">
+        <omgdc:Bounds height="30.0" width="30.0" x="165.0" y="289.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="dept_approve" id="BPMNShape_dept_approve">
+        <omgdc:Bounds height="80.0" width="100.0" x="270.0" y="267.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="hr_approve" id="BPMNShape_hr_approve">
+        <omgdc:Bounds height="80.0" width="100.0" x="670.0" y="267.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="manage-approve" id="BPMNShape_manage-approve">
+        <omgdc:Bounds height="80.0" width="100.0" x="555.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="end" id="BPMNShape_end">
+        <omgdc:Bounds height="28.0" width="28.0" x="832.0" y="293.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-76D7CACC-A333-429B-9C25-A0AE9867BDB7" id="BPMNShape_sid-76D7CACC-A333-429B-9C25-A0AE9867BDB7">
+        <omgdc:Bounds height="40.0" width="40.0" x="450.0" y="287.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="start-dept" id="BPMNEdge_start-dept">
+        <omgdi:waypoint x="194.9965573080246" y="304.32135479945765"></omgdi:waypoint>
+        <omgdi:waypoint x="270.0" y="305.92857142857144"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-50C737B7-2375-41DC-B4C0-2A3C10CFBCB3" id="BPMNEdge_sid-50C737B7-2375-41DC-B4C0-2A3C10CFBCB3">
+        <omgdi:waypoint x="370.0" y="307.16611295681065"></omgdi:waypoint>
+        <omgdi:waypoint x="450.43333333333334" y="307.43333333333334"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="dept-manage" id="BPMNEdge_dept-manage">
+        <omgdi:waypoint x="470.5" y="287.5"></omgdi:waypoint>
+        <omgdi:waypoint x="470.5" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="555.0" y="160.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="hr-end" id="BPMNEdge_hr-end">
+        <omgdi:waypoint x="770.0" y="307.0"></omgdi:waypoint>
+        <omgdi:waypoint x="832.0" y="307.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="manage-ceo" id="BPMNEdge_manage-ceo">
+        <omgdi:waypoint x="655.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="720.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="720.0" y="267.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="dept_hr" id="BPMNEdge_dept_hr">
+        <omgdi:waypoint x="489.5381526104418" y="307.4618473895582"></omgdi:waypoint>
+        <omgdi:waypoint x="670.0" y="307.1002004008016"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
